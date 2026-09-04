@@ -3,22 +3,80 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Getting Started
 
 First, run the development server:
+# Frontend
 
-```bash
+Next.js 16 and React 19 client for the employee management API. The UI uses the App Router and Tailwind CSS 4, with client-side fetches for authenticated data.
+
+## Setup
+
+The backend must be running at `http://localhost:8000` first. From PowerShell:
+
+```powershell
+cd frontend
+npm install
+Copy-Item .env.local.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. `.env.local` contains `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`. Change that value when the API is hosted elsewhere. Run `npm run build` to create a production build and `npm run start` to serve it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## User workflow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/` redirects to `/login`.
+- `/login` validates credentials, calls `POST /auth/login`, saves the returned JWT, and navigates to the dashboard.
+- `/dashboard` displays total, active, and inactive counts plus department and designation distributions from `/employees/stats/summary`.
+- `/employees` displays a desktop table or mobile cards. It supports debounced name/email search, multi-select department and status filters, URL-backed pagination, view, edit, and delete actions.
+- `/employees/new` validates and creates an employee, and confirms before discarding unsaved values.
+- `/employees/[id]` shows one employee record.
+- `/employees/[id]/edit` loads and updates an existing record.
+
+## Authentication behavior
+
+After login the backend sets an HttpOnly `token` cookie and returns an access token in JSON. The frontend stores the returned token in localStorage under `employee_mgmt_token` and adds `Authorization: Bearer <token>` to API calls. `middleware.ts` checks the cookie before allowing `/dashboard` and `/employees` routes. A `401` response clears local storage and redirects to `/login`.
+
+## Frontend structure
+
+- `app/layout.tsx`: global layout, metadata, and navigation.
+- `app/page.tsx`: root redirect.
+- `app/login/page.tsx`: login form and error handling.
+- `app/dashboard/page.tsx`: summary dashboard.
+- `app/employees/page.tsx`: listing, filters, pagination, and delete confirmation.
+- `app/employees/new/page.tsx`: create form.
+- `app/employees/[id]/page.tsx`: detail view.
+- `app/employees/[id]/edit/page.tsx`: edit form.
+- `components/AppNavigation.tsx`: responsive navigation and logout.
+- `components/ui/`: reusable button, input, status, loading, and modal components.
+- `lib/api.ts`: typed generic request helper with JSON, 204, and 401 handling.
+- `lib/auth.ts`: localStorage token helpers.
+- `middleware.ts`: cookie-based route protection.
+
+## API contract used by the UI
+
+The frontend expects the FastAPI service to expose:
+
+| Method | Path | Used by |
+| --- | --- | --- |
+| POST | `/auth/login` | Login |
+| POST | `/auth/logout` | Navigation logout |
+| GET | `/employees/stats/summary` | Dashboard and department filter options |
+| GET | `/employees` | Employee list |
+| GET | `/employees/{id}` | Detail and edit pages |
+| POST | `/employees` | New employee page |
+| PUT | `/employees/{id}` | Edit employee page |
+| DELETE | `/employees/{id}` | List delete action |
+
+Employee forms send `name`, `email`, `phone`, `department`, `designation`, `joining_date`, and `status`. The API performs final validation, so client validation only improves feedback and cannot replace backend authorization or validation.
+
+## Commands
+
+```powershell
+npm run dev
+npm run lint
+npm run build
+npm run start
+```
+
+If requests fail in the browser, check that the backend is running, `NEXT_PUBLIC_API_BASE_URL` has no incorrect path, and backend `CORS_ORIGINS` includes `http://localhost:3000`. Never put backend secrets in `NEXT_PUBLIC_*` variables because they are exposed to the browser.
 
 ## Learn More
 
