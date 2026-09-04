@@ -1,6 +1,6 @@
 import { clearToken, getToken } from "./auth";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://emp-management-app-backend.onrender.com";
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();

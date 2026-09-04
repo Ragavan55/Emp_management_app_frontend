@@ -5,7 +5,7 @@ import Link from "next/link";
 import PageLoadingOverlay from "@/components/ui/PageLoadingOverlay";
 import { getToken } from "@/lib/auth";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://emp-management-app-backend.onrender.com";
 
 type Breakdown = { name: string; count: number };
 type Stats = { total: number; active: number; inactive: number; departments: Breakdown[]; designations: Breakdown[] };

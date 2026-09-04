@@ -9,7 +9,7 @@ Next.js 16 and React 19 client for the employee management API. The UI uses the 
 
 ## Setup
 
-The backend must be running at `http://localhost:8000` first. From PowerShell:
+The deployed frontend uses the Render API at `https://emp-management-app-backend.onrender.com`. For local development, use the same API by default:
 
 ```powershell
 cd frontend
@@ -18,7 +18,7 @@ Copy-Item .env.local.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`. `.env.local` contains `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`. Change that value when the API is hosted elsewhere. Run `npm run build` to create a production build and `npm run start` to serve it.
+Open `http://localhost:3000`. `.env.local` contains `NEXT_PUBLIC_API_BASE_URL=https://emp-management-app-backend.onrender.com`. Run `npm run build` to create a production build and `npm run start` to serve it.
 
 ## User workflow
 
@@ -32,7 +32,7 @@ Open `http://localhost:3000`. `.env.local` contains `NEXT_PUBLIC_API_BASE_URL=ht
 
 ## Authentication behavior
 
-After login the backend sets an HttpOnly `token` cookie and returns an access token in JSON. The frontend stores the returned token in localStorage under `employee_mgmt_token` and adds `Authorization: Bearer <token>` to API calls. `middleware.ts` checks the cookie before allowing `/dashboard` and `/employees` routes. A `401` response clears local storage and redirects to `/login`.
+After login the backend sets an HttpOnly `token` cookie and returns an access token in JSON. The frontend stores the returned token in localStorage under `employee_mgmt_token` and adds `Authorization: Bearer <token>` to API calls. A `401` response clears local storage and redirects to `/login`.
 
 ## Frontend structure
 
@@ -48,7 +48,6 @@ After login the backend sets an HttpOnly `token` cookie and returns an access to
 - `components/ui/`: reusable button, input, status, loading, and modal components.
 - `lib/api.ts`: typed generic request helper with JSON, 204, and 401 handling.
 - `lib/auth.ts`: localStorage token helpers.
-- `middleware.ts`: cookie-based route protection.
 
 ## API contract used by the UI
 
@@ -76,7 +75,7 @@ npm run build
 npm run start
 ```
 
-If requests fail in the browser, check that the backend is running, `NEXT_PUBLIC_API_BASE_URL` has no incorrect path, and backend `CORS_ORIGINS` includes `http://localhost:3000`. Never put backend secrets in `NEXT_PUBLIC_*` variables because they are exposed to the browser.
+If requests fail in the browser, check that `NEXT_PUBLIC_API_BASE_URL` is `https://emp-management-app-backend.onrender.com` and backend `CORS_ORIGINS` includes `https://emp-management-app-frontend.vercel.app`. Never put backend secrets in `NEXT_PUBLIC_*` variables because they are exposed to the browser.
 
 ## Learn More
 
