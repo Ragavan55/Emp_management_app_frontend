@@ -31,7 +31,7 @@ export default function LoginPage() {
     setErrors((prev) => ({ ...prev, form: undefined }));
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || "https://emp-management-app-backend.onrender.com"}/auth/login`, {
+      const response = await fetch("https://emp-management-app-backend.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

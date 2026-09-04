@@ -9,16 +9,15 @@ Next.js 16 and React 19 client for the employee management API. The UI uses the 
 
 ## Setup
 
-The deployed frontend uses the Render API at `https://emp-management-app-backend.onrender.com`. For local development, use the same API by default:
+The frontend uses the deployed Render API directly at `https://emp-management-app-backend.onrender.com`; no frontend environment variable is required:
 
 ```powershell
 cd frontend
 npm install
-Copy-Item .env.local.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`. `.env.local` contains `NEXT_PUBLIC_API_BASE_URL=https://emp-management-app-backend.onrender.com`. Run `npm run build` to create a production build and `npm run start` to serve it.
+Open `http://localhost:3000`. The same deployed API is used in local development and in Vercel. Run `npm run build` to create a production build and `npm run start` to serve it.
 
 ## User workflow
 

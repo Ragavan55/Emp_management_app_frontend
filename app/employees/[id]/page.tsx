@@ -7,7 +7,7 @@ import PageLoadingOverlay from "@/components/ui/PageLoadingOverlay";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { getToken } from "@/lib/auth";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://emp-management-app-backend.onrender.com";
+const API_BASE_URL = "https://emp-management-app-backend.onrender.com";
 
 type Employee = {
   id: string;
