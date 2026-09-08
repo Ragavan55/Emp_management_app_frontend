@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import Input from "@/components/ui/Input";
 import { api } from "@/lib/api";
 
@@ -16,6 +17,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [duplicateEmailModalOpen, setDuplicateEmailModalOpen] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; confirmPassword?: string; form?: string }>({});
 
   const handleSubmit = async (event: FormEvent) => {
@@ -44,7 +46,12 @@ export default function SignupPage() {
       });
       router.push("/login?created=1");
     } catch (error) {
-      setErrors({ form: error instanceof Error ? error.message : "Could not create account" });
+      const message = error instanceof Error ? error.message : "Could not create account";
+      if (message.includes("same email")) {
+        setDuplicateEmailModalOpen(true);
+      } else {
+        setErrors({ form: message });
+      }
     } finally {
       setLoading(false);
     }
@@ -75,6 +82,15 @@ export default function SignupPage() {
           </p>
         </form>
       </div>
+
+      <ConfirmModal
+        open={duplicateEmailModalOpen}
+        title="Email already registered"
+        message="A user with the same email already exists. Please use a different email."
+        confirmLabel="Use different email"
+        onConfirm={() => setDuplicateEmailModalOpen(false)}
+        onCancel={() => setDuplicateEmailModalOpen(false)}
+      />
     </main>
   );
 }
