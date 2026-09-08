@@ -28,7 +28,7 @@ export default function AppNavigation() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  if (pathname === "/login") return null;
+  if (pathname === "/login" || pathname === "/signup") return null;
 
   const logout = async () => {
     try {

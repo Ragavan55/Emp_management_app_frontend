@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { saveToken } from "@/lib/auth";
 import Button from "@/components/ui/Button";
@@ -54,7 +55,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-100 p-6">
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg ring-1 ring-slate-200">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-slate-900">Employee Management</h1>
@@ -70,6 +71,10 @@ export default function LoginPage() {
           <Button type="submit" loading={loading} className="w-full" disabled={loading}>
             {loading ? "Signing in..." : "Login"}
           </Button>
+
+          <p className="text-center text-sm text-slate-500">
+            Need an account? <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-500">Sign up</Link>
+          </p>
         </form>
       </div>
     </main>

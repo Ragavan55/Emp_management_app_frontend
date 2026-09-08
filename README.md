@@ -74,7 +74,7 @@ npm run build
 npm run start
 ```
 
-If requests fail in the browser, check that `NEXT_PUBLIC_API_BASE_URL` is `https://emp-management-app-backend.onrender.com` and backend `CORS_ORIGINS` includes `https://emp-management-app-frontend.vercel.app`. Never put backend secrets in `NEXT_PUBLIC_*` variables because they are exposed to the browser.
+If requests fail in the browser, check that the deployed backend is reachable and backend `CORS_ORIGINS` includes `https://emp-management-app-frontend.vercel.app`. Backend secrets must never be placed in frontend code or environment variables exposed to the browser.
 
 ## Learn More
 
